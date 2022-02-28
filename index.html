@@ -52,7 +52,7 @@
                                 <span>Codigo De Descuento:</span>
                                 <input type="text" placeholder="Ingrese Codigo" @keyup.enter="product.price *= 50/100">
                             </div>
-                            <button :disabled="product.stock===0" class="add-to-cart" @click="addToCart">Agregar al carro</button>
+                            <button :disabled="product.stock===0" class="add-to-cart" @click="product.stock-=1">Agregar al carro</button>
             </section>
         </main>
     </div>
@@ -67,7 +67,7 @@
                     product: {
                         name: "Laptop Hp",
                         price: 540,
-                        stock: 0,
+                        stock: 5,
                         content: "lorem ipsum dolor",
                         images: [{
                             image: "./images/laptop.jpg",
@@ -104,7 +104,7 @@
                     }, {
                         name: "Laptop Hp 2",
                         price: 520,
-                        stock: 0,
+                        stock: 4,
                         content: "lorem ipsum dolor",
                         images: [{
                             image: "./images/laptop.jpg",
@@ -118,7 +118,7 @@
                     }, {
                         name: "Laptop Hp 3",
                         price: 540,
-                        stock: 0,
+                        stock: 5,
                         content: "lorem ipsum dolor",
                         images: [{
                             image: "./images/laptop.jpg",
