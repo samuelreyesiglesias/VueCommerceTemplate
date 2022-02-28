@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VueCommerceTemplate</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <h3>Vue Commerce Template</h3>
+            <button class="cart" v-show="cartOpen">Carro (0)</button>
+            <div class="cart-content">
+                <div class="cart-content__product" v-for="product in cart" :key="product.name">
+                    <img v-bind:src="product.images[0].thumbnail" alt="">
+                    <span>
+                        {{product.name.toUpperCase()}} 
+                        $ {{new Intl.NumberFormat("es-CO").format(product.price)}}
+                        {{product.stock ===0 ? 'Agotado' : ''}}
+                    </span>
+                </div>
+            </div>
+        </header>
+        <main>
+            <section class="product">
+                <div class="product__thumbnails">
+                    <div v-for="image in product.images" :key="image.thumbnail" class="thumb" :class="{active : activeImage==index}" :style="{backgroundImage: 'url('+image.thumbnail+')'}">
+                    </div>
+                    <div class="product__image">
+                        <img src="" alt="">
+                    </div>
+                </div>
+            </section>
+            <section class="description">
+                <h4>
+                    {{product.name.toUpperCase()}} {{product.stock ===0 ? 'Agotado' : ''}}
+                </h4>
+                <span class="bagge new" v-if="product.new">Nuevo</span>
+                <span class="badge offer" v-if="product.offer">Oferta</span>
+                <p class="description__status" v-if="product.stock===3">Quedan pocas unidades</span>
+                    <p class="description__status" v-else-if="product.stock===2">El producto esta por terminarse</span>
+                        <p class="description__status" v-else-if="product.stock===1">Ultima unidad disponible</span>
+                            <p class="description__price">${{new Intl.NumberFormat("en-EN").format(product.price)}}</p>
+                            <p class="description__ceontnt">
+                                Loren ipsum dolor sit amet,
+                            </p>
+                            <div class="discount">
+                                <span>Codigo De Descuento:</span>
+                                <input type="text" placeholder="Ingrese Codigo">
+                            </div>
+                            <button :disabled="product.stock===0" class="add-to-cart" @click="addToCart">Agregar al carro</button>
+            </section>
+        </main>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        const {
+            createApp
+        } = Vue;
+        const app = createApp({
+            data() {
+                return {
+                    product: {
+                        name: "Laptop Hp",
+                        price: 540,
+                        stock: 0,
+                        content: "lorem ipsum dolor",
+                        images: [{
+                            image: "./images/laptop.jpg",
+                            thumbnail: "./images/laptop-thumb.jpg"
+                        }, {
+                            image: "./images/laptop2.jpg",
+                            thumbnail: "./images/laptop2-thumb.jpg"
+                        }, {
+                            image: "./images/laptop2.jpg",
+                            thumbnail: "./images/laptop2-thumb.jpg"
+                        }, {
+                            image: "./images/laptop2.jpg",
+                            thumbnail: "./images/laptop2-thumb.jpg"
+                        }],
+                        new: true,
+                        offer: true
+                    },
+                    cartOpen: true,
+                    activeImage: 1,
+                    cart: [{
+                        name: "Laptop Hp 1",
+                        price: 510,
+                        stock: 0,
+                        content: "lorem ipsum dolor",
+                        images: [{
+                            image: "./images/laptop.jpg",
+                            thumbnail: "./images/laptop-thumb.jpg"
+                        }, {
+                            image: "./images/laptop2.jpg",
+                            thumbnail: "./images/laptop2-thumb.jpg"
+                        }],
+                        new: true,
+                        offer: true
+                    }, {
+                        name: "Laptop Hp 2",
+                        price: 520,
+                        stock: 0,
+                        content: "lorem ipsum dolor",
+                        images: [{
+                            image: "./images/laptop.jpg",
+                            thumbnail: "./images/laptop-thumb.jpg"
+                        }, {
+                            image: "./images/laptop2.jpg",
+                            thumbnail: "./images/laptop2-thumb.jpg"
+                        }],
+                        new: true,
+                        offer: true
+                    }, {
+                        name: "Laptop Hp 3",
+                        price: 540,
+                        stock: 0,
+                        content: "lorem ipsum dolor",
+                        images: [{
+                            image: "./images/laptop.jpg",
+                            thumbnail: "./images/laptop-thumb.jpg"
+                        }, {
+                            image: "./images/laptop2.jpg",
+                            thumbnail: "./images/laptop2-thumb.jpg"
+                        }],
+                        new: true,
+                        offer: true
+                    }]
+                }
+            }
+        });
+        app.mount("#app");
+    </script>
+</body>
+
+</html>
