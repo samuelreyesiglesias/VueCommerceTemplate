@@ -85,6 +85,28 @@
                     new: true,
                     offer: true,
                 });
+                const activeImage = ref(0);
+                const cartOpen = ref(false);
+                const cart = ref([]);
+
+                setInterval(() => {
+                    activeImage.value += 1;
+                    if (activeImage.value === product.value.images.length) {
+                        activeImage.value = 0;
+                    }
+                }, 2000);
+
+                return {
+                    product,
+                    activeImage,
+                    cartOpen,
+                    cart,
+                    methods: {
+                        addToCart(product) {
+                            cart.value.push(product);
+                        }
+                    }
+                }
 
             }
         });
