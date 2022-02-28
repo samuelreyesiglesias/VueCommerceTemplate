@@ -13,8 +13,8 @@
     <div id="app">
         <header>
             <h3>Vue Commerce Template</h3>
-            <button class="cart" v-show="cartOpen">Carro (0)</button>
-            <div class="cart-content">
+            <button class="cart" v-on:mouseover="cartOpen=!cartOpen">Carro (0)</button>
+            <div class="cart-content" v-show="cartOpen">
                 <div class="cart-content__product" v-for="(product,index) in cart" :key="product.name" :class="{'bg-gray': index & 1}">
                     <img v-bind:src="product.images[0].thumbnail" alt="">
                     <span>
@@ -28,10 +28,10 @@
         <main>
             <section class="product">
                 <div class="product__thumbnails">
-                    <div v-for="(image,index) in product.images" :key="image.thumbnail" class="thumb" :class="{active : activeImage==index}" :style="{backgroundImage: 'url('+image.thumbnail+')'}">
+                    <div v-for="(image,index) in product.images" :key="image.thumbnail" class="thumb" :class="{active : activeImage==index}" :style="{backgroundImage: 'url('+image.thumbnail+')'}" @click="activeImage=index">
                     </div>
                     <div class="product__image">
-                        <img src="" alt="">
+                        <img :src="product.images[activeImage].image" :alt="product.name" width="500">
                     </div>
                 </div>
             </section>
@@ -50,7 +50,7 @@
                             </p>
                             <div class="discount">
                                 <span>Codigo De Descuento:</span>
-                                <input type="text" placeholder="Ingrese Codigo">
+                                <input type="text" placeholder="Ingrese Codigo" @keyup.enter="product.price *= 50/100">
                             </div>
                             <button :disabled="product.stock===0" class="add-to-cart" @click="addToCart">Agregar al carro</button>
             </section>
