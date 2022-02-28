@@ -50,7 +50,7 @@
                             </p>
                             <div class="discount">
                                 <span>Codigo De Descuento:</span>
-                                <input type="text" placeholder="Ingrese Codigo" @keyup.enter="product.price *= 50/100">
+                                <input type="text" placeholder="Ingrese Codigo" @keyup.enter="ApplyDiscount($event);">
                             </div>
                             <button :disabled="product.stock===0" class="add-to-cart" @click="product.stock-=1">Agregar al carro</button>
             </section>
@@ -87,49 +87,17 @@
                     },
                     activeImage: 1,
                     cartOpen: true,
-                    cart: [{
-                        name: "Laptop Hp 1",
-                        price: 510,
-                        stock: 0,
-                        content: "lorem ipsum dolor",
-                        images: [{
-                            image: "./images/laptop.jpg",
-                            thumbnail: "./images/laptop-thumb.jpg"
-                        }, {
-                            image: "./images/laptop2.jpg",
-                            thumbnail: "./images/laptop2-thumb.jpg"
-                        }],
-                        new: true,
-                        offer: true
-                    }, {
-                        name: "Laptop Hp 2",
-                        price: 520,
-                        stock: 4,
-                        content: "lorem ipsum dolor",
-                        images: [{
-                            image: "./images/laptop.jpg",
-                            thumbnail: "./images/laptop-thumb.jpg"
-                        }, {
-                            image: "./images/laptop2.jpg",
-                            thumbnail: "./images/laptop2-thumb.jpg"
-                        }],
-                        new: true,
-                        offer: true
-                    }, {
-                        name: "Laptop Hp 3",
-                        price: 540,
-                        stock: 5,
-                        content: "lorem ipsum dolor",
-                        images: [{
-                            image: "./images/laptop.jpg",
-                            thumbnail: "./images/laptop-thumb.jpg"
-                        }, {
-                            image: "./images/laptop2.jpg",
-                            thumbnail: "./images/laptop2-thumb.jpg"
-                        }],
-                        new: true,
-                        offer: true
-                    }]
+                    cart: [],
+                    discountCodes: ["CODE1", "CODE2"]
+                }
+            },
+            methods: {
+                ApplyDiscount(event) {
+                    const discountcodeindex = this.discountCodes.indexOf(event.target.value);
+                    if (discountcodeindex > 0) {
+                        this.product.price -= this.product.price * 0.05;
+                        this.discountCodes.splice(discountcodeindex, 1);
+                    }
                 }
             }
         });
