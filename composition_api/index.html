@@ -50,7 +50,7 @@
                             </p>
                             <div class="discount">
                                 <span>Codigo De Descuento:</span>
-                                <input type="text" placeholder="Ingrese Codigo" @keyup.enter="product.price *= 50/100">
+                                <input type="text" placeholder="Ingrese Codigo" @keyup.enter="applyDiscount">
                             </div>
                             <button :disabled="product.stock===0" class="add-to-cart" @click="product.stock-=1">Agregar al carro</button>
             </section>
@@ -102,8 +102,8 @@
                     cartOpen,
                     cart,
                     methods: {
-                        addToCart(product) {
-                            cart.value.push(product);
+                        applyDiscount() {
+                            this.product.price -= 50 / 100;
                         }
                     }
                 }

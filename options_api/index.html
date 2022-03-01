@@ -13,7 +13,7 @@
     <div id="app">
         <header>
             <h3>Vue Commerce Template</h3>
-            <button class="cart" v-on:mouseover="cartOpen=!cartOpen">Carro (0)</button>
+            <button class="cart" v-on:mouseover="cartOpen=!cartOpen">Carro ({{cart.length}})</button>
             <div class="cart-content" v-show="cartOpen">
                 <div class="cart-content__product" v-for="(product,index) in cart" :key="product.name" :class="{'bg-gray': index & 1}">
                     <img v-bind:src="product.images[0].thumbnail" alt="">
@@ -21,6 +21,7 @@
                         {{product.name.toUpperCase()}} 
                         $ {{new Intl.NumberFormat("es-CO").format(product.price)}}
                         {{product.stock ===0 ? 'Agotado' : ''}}
+                        ({{product.quantity}})
                     </span>
                 </div>
             </div>
@@ -46,13 +47,13 @@
                         <p class="description__status" v-else-if="product.stock===1">Ultima unidad disponible</span>
                             <p class="description__price">${{new Intl.NumberFormat("en-EN").format(product.price)}}</p>
                             <p class="description__ceontnt">
-                                Loren ipsum dolor sit amet,
+                                Loren ipsum dolor sit amet.
                             </p>
                             <div class="discount">
                                 <span>Codigo De Descuento:</span>
                                 <input type="text" placeholder="Ingrese Codigo" @keyup.enter="ApplyDiscount($event);">
                             </div>
-                            <button :disabled="product.stock===0" class="add-to-cart" @click="product.stock-=1">Agregar al carro</button>
+                            <button :disabled="product.stock===0" class="add-to-cart" @click="addToCart();">Agregar al carro</button>
             </section>
         </main>
     </div>
@@ -84,6 +85,7 @@
                         }],
                         new: true,
                         offer: true,
+                        quantity: 1,
                     },
                     activeImage: 1,
                     cartOpen: true,
@@ -98,6 +100,15 @@
                         this.product.price -= this.product.price * 0.05;
                         this.discountCodes.splice(discountcodeindex, 1);
                     }
+                },
+                addToCart() {
+                    const prodIndex = this.cart.findIndex(product => product.name == this.product.name);
+                    if (prodIndex >= 0) {
+                        this.cart[prodIndex].quantity += 1;
+                    } else {
+                        this.cart.push(this.product);
+                    }
+                    this.product.stock -= 1;
                 }
             }
         });
