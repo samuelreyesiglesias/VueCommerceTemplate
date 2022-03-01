@@ -96,7 +96,7 @@
             methods: {
                 ApplyDiscount(event) {
                     const discountcodeindex = this.discountCodes.indexOf(event.target.value);
-                    if (discountcodeindex > 0) {
+                    if (discountcodeindex >= 0) {
                         this.product.price -= this.product.price * 0.05;
                         this.discountCodes.splice(discountcodeindex, 1);
                     }

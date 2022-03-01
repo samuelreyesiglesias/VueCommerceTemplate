@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VueCommerceTemplate</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <h3>Vue Commerce Template</h3>
+            <button class="cart" v-on:mouseover="cartOpen=!cartOpen">Carro {{cart.length}}</button>
+            <div class="cart-content" v-show="cartOpen">
+                <div class="cart-content__product" v-for="(product,index) in cart" :key="product.name" :class="{'bg-gray': index & 1}">
+                    <img v-bind:src="product.images[0].thumbnail" alt="">
+                    <span> 
+                        {{product.name.toUpperCase()}} 
+                        $ {{new Intl.NumberFormat("es-CO").format(product.price)}}
+                        {{product.stock ===0 ? 'Agotado' : ''}}
+                        ({{product.quantity}})
+                    </span>
+                </div>
+            </div>
+        </header>
+        <main>
+            <section class="product">
+                <div class="product__thumbnails">
+                    <div v-for="(image,index) in product.images" :key="image.thumbnail" class="thumb" :class="{active : activeImage==index}" :style="{backgroundImage: 'url('+image.thumbnail+')'}" @click="activeImage=index">
+                    </div>
+                    <div class="product__image">
+                        <img :src="product.images[activeImage].image" :alt="product.name" width="500">
+                    </div>
+                </div>
+            </section>
+            <section class="description">
+                <h4>
+                    {{product.name.toUpperCase()}} {{product.stock ===0 ? 'Agotado' : ''}}
+                </h4>
+                <span class="bagge new" v-if="product.new">Nuevo</span>
+                <span class="badge offer" v-if="product.offer">Oferta</span>
+                <p class="description__status" v-if="product.stock===3">Quedan pocas unidades</span>
+                    <p class="description__status" v-else-if="product.stock===2">El producto esta por terminarse</span>
+                        <p class="description__status" v-else-if="product.stock===1">Ultima unidad disponible</span>
+                            <p class="description__price">${{new Intl.NumberFormat("en-EN").format(product.price)}}</p>
+                            <p class="description__ceontnt">
+                                Loren ipsum dolor sit amet,
+                            </p>
+                            <div class="discount">
+                                <span>Codigo De Descuento:</span>
+                                <input type="text" placeholder="Ingrese Codigo" @keyup.enter="applyDiscount($event)">
+                            </div>
+                            <button :disabled="product.stock===0" class="add-to-cart" @click="addToCart();">Agregar al carro</button>
+            </section>
+        </main>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        const {
+            createApp,
+            ref,
+            reactive,
+            toRefs
+        } = Vue;
+        const app = createApp({
+            setup() {
+                const productState = reactive({
+                    product: {
+                        name: "Laptop Hp",
+                        price: 540,
+                        stock: 5,
+                        content: "lorem ipsum dolor",
+                        images: [{
+                            image: "./images/laptop.jpg",
+                            thumbnail: "./images/laptop-thumb.jpg"
+                        }, {
+                            image: "./images/laptop2.jpg",
+                            thumbnail: "./images/laptop2-thumb.jpg"
+                        }, {
+                            image: "./images/laptop3.jpg",
+                            thumbnail: "./images/laptop3-thumb.jpg"
+                        }, {
+                            image: "./images/laptop4.jpg",
+                            thumbnail: "./images/laptop4-thumb.jpg"
+                        }],
+                        new: true,
+                        offer: true,
+                        quantity: 0
+                    },
+                    activeImage: 0,
+                });
+
+                const cartState = reactive({
+                    cart: [],
+                    cartOpen: false,
+                    discountCodes: ["CODE1", "CODE2"]
+                });
+
+                function applyDiscount(event) {
+                    const discountCodeIndex = cartState.discountCodes.indexOf(event.target.value);
+                    if (discountCodeIndex >= 0) {
+                        productState.product.price *= 50 / 100;
+                        cartState.discountCodes.splice(discountCodeIndex, 1);
+                    }
+                }
+
+                function addToCart() {
+                    cartState.cartOpen = true;
+                    const prodIndex = cartState.cart.findIndex(prod => prod.name == productState.product.name);
+                    if (prodIndex >= 0) {
+                        cartState.cart[prodIndex].quantity += 1;
+                    } else {
+                        cartState.cart.push(productState.product);
+                    }
+                    productState.product.stock -= 1;
+                }
+
+                return {
+                    ...toRefs(productState),
+                    ...toRefs(cartState),
+                    addToCart,
+                    applyDiscount
+                }
+
+            }
+        });
+        app.mount("#app");
+    </script>
+</body>
+
+</html>
