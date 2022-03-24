@@ -14,8 +14,7 @@ app.component("product", {
             {{product.name}} <br>
             {{product.name.toUpperCase()}} {{product.stock ===0 ? 'Agotado' : ''}}
         </h4>
-        
-        <badge :product="product"></badge>
+         
         
         <p class="description__status" v-if="product.stock===3">Quedan pocas unidades</p>
             <p class="description__status" v-else-if="product.stock===2">El producto esta por terminarse</p>

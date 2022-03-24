@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VueCommerceTemplate</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <h3>Vue Commerce Template</h3>
+            <button class="cart" v-on:mouseover="cartOpen=!cartOpen">Carro ({{cart.length}})</button>
+            <div class="cart-content" v-show="cartOpen">
+                <div class="cart-content__product" v-for="(product,index) in cart" :key="product.name" :class="{'bg-gray': index & 1}">
+                    <img v-bind:src="product.images[0].thumbnail" alt="">
+                    <span>
+                        {{product.name.toUpperCase()}} 
+                        $ {{new Intl.NumberFormat("es-CO").format(product.price)}}
+                        {{product.stock ===0 ? 'Agotado' : ''}}
+                        ({{product.quantity}})
+                    </span>
+                </div>
+            </div>
+        </header>
+        <main>
+            <product v-for="product in products" :key="product.name" @sendtocart="addToCart($event);"></product>
+            <product v-for="product in products" :key="product.name" @sendtocart="addToCart($event);"></product>
+            <product v-for="product in products" :key="product.name" @sendtocart="addToCart($event);"></product>
+        </main>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        const {
+            createApp
+        } = Vue;
+        const app = createApp({
+            data() {
+                return {
+                    products: [{
+                        name: "Laptop Hp",
+                        price: 540,
+                        stock: 5,
+                        content: "lorem ipsum dolor",
+                        images: [{
+                            image: "./images/laptop.jpg",
+                            thumbnail: "./images/laptop-thumb.jpg"
+                        }, {
+                            image: "./images/laptop2.jpg",
+                            thumbnail: "./images/laptop2-thumb.jpg"
+                        }, {
+                            image: "./images/laptop3.jpg",
+                            thumbnail: "./images/laptop3-thumb.jpg"
+                        }, {
+                            image: "./images/laptop4.jpg",
+                            thumbnail: "./images/laptop4-thumb.jpg"
+                        }],
+                        new: true,
+                        offer: true,
+                        quantity: 1
+                    }],
+                    cartOpen: true,
+                    cart: []
+                }
+            },
+            methods: {
+                addToCart(product) {
+                    const prodIndex = this.cart.findIndex(prod => prod.name == product.name);
+                    if (prodIndex >= 0) {
+                        this.cart[prodIndex].quantity += 1;
+                    } else {
+                        this.cart.push(product);
+                    }
+                    product.stock -= 1;
+                }
+            }
+        });
+    </script>
+    <script src="./product.js"></script>
+    <script>
+        app.mount("#app");
+    </script>
+</body>
+
+</html>
